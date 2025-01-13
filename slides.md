@@ -173,3 +173,59 @@ with Path(filename).open() as fp:
 ```
 
 ---
+
+# 為什麼要轉成 Markdown？
+
+**Pros**
+
+- 省 token，處理效率高
+- 讓 LLM 專注在文字上，不用管 HTML 的 tag
+- 對人來說比較好閱讀
+
+**Cons**
+
+- 結構比較沒有 HTML 完整
+
+---
+
+# 簡單的 [Markdownify](https://github.com/matthewwithanm/python-markdownify) 範例
+
+把 HTML 轉成比較好讀的 Markdown 格式
+
+```python
+import httpx
+from markdownify import markdownify as md
+
+
+url = "https://www.google.com"
+resp = httpx.get(url)
+resp.raise_for_status()
+
+markdown = md(resp.text, strip=["a", "img"]) # 不要連結和圖片
+print(trim_and_filter_lines(markdown))
+```
+
+---
+
+# 清掉空白和換行
+
+```python
+def trim_and_filter_lines(text: str) -> str:
+    """
+    Trims whitespace from each line in the given text and filters out empty lines.
+
+    Args:
+        text (str): The input text containing multiple lines.
+
+    Returns:
+        str: A string with each line trimmed of leading and trailing whitespace and empty lines removed.
+    """
+    lines: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped:
+            lines += [stripped]
+    return "\n".join(lines)
+```
+
+---
