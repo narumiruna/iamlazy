@@ -266,3 +266,30 @@ TBD
 ---
 
 # 現在
+
+- [JSON Mode](https://platform.openai.com/docs/guides/structured-outputs/json-mode?lang=python#json-mode)
+  - [Improved instruction following and JSON mode](https://openai.com/index/new-models-and-developer-products-announced-at-devday/)
+- [Structured Output](https://platform.openai.com/docs/guides/structured-outputs) (推薦)
+  - [OpenAI CookBook - Introduction to Structured Outputs](https://cookbook.openai.com/examples/structured_outputs_intro)
+  - 不用驗證拿到的輸出是否正確，也不用再重新產一次輸出
+  - 寫 prompt 更容易了，不用再特別強調要輸出什麼樣的格式
+
+---
+
+# JSON Mode
+
+- Structured Outputs 的基本版本
+- 保證輸出是合法的 JSON 格式 (如果有處理 edge cases)
+- 不保證輸出的內容符合某種特定的結構
+- 要在 prompt 中加入 "JSON" 字串，否則 API 會回傳錯誤
+- 要處理 edge cases
+  - 輸出太長被截斷
+  - 違反安全或政策規範 (refusal or content filter)
+
+---
+
+# JSON Mode 的範例
+
+```python
+
+```
