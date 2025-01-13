@@ -119,7 +119,6 @@ paginate: true
 
 ```python
 import httpx
-from rich import print
 
 
 url = "https://developers.binance.com/docs/binance-spot-api-docs"
@@ -142,11 +141,11 @@ print(resp.text)
 
 ---
 
-# 簡單的範例 (Playwright)
+# [SingleFile](https://chromewebstore.google.com/detail/singlefile/mpiodijhokgodhhofbcjdecpffjipkle?hl=zh-TW)
 
-```python
+一個一鍵抓下整個網頁儲存成單一檔案的 Chrome 套件
 
-```
+![fit](images/singlefile.png)
 
 ---
 
@@ -158,24 +157,17 @@ print(resp.text)
 import subprocess
 from pathlib import Path
 
-from rich import print
 
-
-url = "https://docs.cdp.coinbase.com/exchange/docs/changelog"
-filename = "coinbase.html"
-browser_load_max_time = 10_000  # 10 seconds
 subprocess.run(
     [
         "single-file",
-        f"--browser-load-max-time={browser_load_max_time}", # 等待網頁載入的時間(等JavaScript)
+        "--browser-load-max-time=10_000", # 等待網頁載入的時間(等JavaScript)
         "--block-images=true", # 不要抓圖片
-        "--filename-conflict-action", # 若檔案已存在，覆蓋
-        "overwrite",
-        url,
-        filename,
+        "--filename-conflict-action=overwrite", # 若檔案已存在，覆蓋
+        "https://docs.cdp.coinbase.com/exchange/docs/changelog",
+        "coinbase.html",
     ]
 )
-
 with Path(filename).open() as fp:
     print(fp.read())
 ```
