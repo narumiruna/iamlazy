@@ -291,5 +291,25 @@ TBD
 # JSON Mode 的範例
 
 ```python
+from openai import OpenAI
 
+client = OpenAI()
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": 'Extract dates from message. JSON: {"dates": [{"year": int, "month": int, "day": int}]}',
+        },
+        {
+            "role": "user",
+            "content": "今天是2025年1月20日",
+        },
+    ],
+    temperature=0,
+    response_format={"type": "json_object"},
+)
+print(response.choices[0].message.content)
+
+> {"dates": [{"year": 2025, "month": 1, "day": 20}]}
 ```
