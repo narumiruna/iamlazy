@@ -141,3 +141,6 @@ print(resp.text)
 目前的偏好是 Playwright >= SingleFile > Selenium
 
 ---
+
+# 簡單的範例 (Playwright)
+
