@@ -299,7 +299,7 @@ response = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": 'Extract dates from message. JSON: {"dates": [{"year": int, "month": int, "day": int}]}',
+            "content": 'Extract dates from message. JSON format: {"dates": [{"year": int, "month": int, "day": int}]}',
         },
         {
             "role": "user",
@@ -310,6 +310,163 @@ response = client.chat.completions.create(
     response_format={"type": "json_object"},
 )
 print(response.choices[0].message.content)
-
-> {"dates": [{"year": 2025, "month": 1, "day": 20}]}
+# {"dates": [{"year": 2025, "month": 1, "day": 20}]}
 ```
+
+---
+
+## JSON Mode Example
+
+```python
+from openai import OpenAI
+
+client = OpenAI()
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful assistant designed to output JSON.",
+        },
+        {
+            "role": "user",
+            "content": "Who won the world series in 2020? Please respond in the format {winner: ...}",
+        },
+    ],
+    response_format={"type": "json_object"},
+)
+
+print(response.choices[0].message.content)
+# { "winner": "Los Angeles Dodgers" }
+```
+
+---
+
+# [Structuted Output](https://platform.openai.com/docs/guides/structured-outputs)
+
+- 使用 Pydantic
+- 不用在 prompt 中寫 schema
+
+---
+
+### [Supported Models](https://platform.openai.com/docs/guides/structured-outputs/supported-models)
+
+- gpt-4o
+  - gpt-4o-mini-2024-07-18 and later
+  - gpt-4o-2024-08-06 and later
+
+---
+
+### [Structured Output Example](https://platform.openai.com/docs/guides/structured-outputs/examples)
+
+```python
+from pydantic import BaseModel
+from openai import OpenAI
+
+client = OpenAI()
+
+class Step(BaseModel):
+    explanation: str
+    output: str
+
+class MathReasoning(BaseModel):
+    steps: list[Step]
+    final_answer: str
+
+completion = client.beta.chat.completions.parse(
+    model="gpt-4o-2024-08-06",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a helpful math tutor. Guide the user through the solution step by step."
+        },
+        {
+            "role": "user",
+            "content": "how can I solve 8x + 7 = -23"
+        }
+    ],
+    response_format=MathReasoning,
+)
+
+math_reasoning = completion.choices[0].message.parsed
+```
+
+---
+
+### [Example Response](https://platform.openai.com/docs/guides/structured-outputs/example-response)
+
+```json
+{
+  "steps": [
+    {
+      "explanation": "Start with the equation 8x + 7 = -23.",
+      "output": "8x + 7 = -23"
+    },
+    {
+      "explanation": "Subtract 7 from both sides to isolate the term with the variable.",
+      "output": "8x = -23 - 7"
+    },
+    {
+      "explanation": "Simplify the right side of the equation.",
+      "output": "8x = -30"
+    },
+    {
+      "explanation": "Divide both sides by 8 to solve for x.",
+      "output": "x = -30 / 8"
+    },
+    {
+      "explanation": "Simplify the fraction.",
+      "output": "x = -15 / 4"
+    }
+  ],
+  "final_answer": "x = -15 / 4"
+}
+```
+
+---
+
+### 更多 Structured Outputs
+
+- [OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Structured_Outputs_Intro.ipynb)
+- [simplemid](https://github.com/kennethreitz/simplemind/tree/main/examples)
+
+---
+
+## Prompt Generation
+
+我就懶
+
+---
+
+### 各種方法
+
+- 先寫一個簡單的，然後丟給語言模型幫你修改
+- [Prompt generation](https://platform.openai.com/docs/guides/prompt-generation)
+  - Meta prompt: prompt 的 prompt
+- [Generate prompts, function definitions, and structured output schemas in the Playground](https://help.openai.com/en/articles/9824968-generate-prompts-function-definitions-and-structured-output-schemas-in-the-playground)
+- [Anthropic dashboard](https://console.anthropic.com/dashboard)
+
+---
+
+### 修改 Prompt 的心得
+
+- 指令明確
+- 用同一個 prompt 抽不同目標且格式差異大時，在使用 structured output 的情況下不要給 example
+
+---
+
+### [簡單的範例](https://github.com/narumiruna/exchange-changelog/blob/main/examples/binance_spot_example.ipynb)
+
+---
+
+# 看程式和結果
+
+- [Github](https://github.com/narumiruna/exchange-changelog)
+- [SingleFile](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/loaders/html.py#L19)
+- [System prompt](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/tools/changelog.py#L11)
+- [Prompt generation](https://github.com/narumiruna/exchange-changelog/blob/ec104c294d5363c8bb2255baa36db771a906869c/generate_prompt.py#L8)
+- [Gist](https://gist.github.com/narumiruna/707786b350fc17197a35ee9ae3d0456d)
+
+---
+
+# END
