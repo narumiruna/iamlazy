@@ -15,7 +15,10 @@ def main() -> None:
                 "role": "system",
                 "content": 'Extract dates from message. JSON: {"dates": [{"year": int, "month": int, "day": int}]}',
             },
-            {"role": "user", "content": "今天是2025年1月20日"},
+            {
+                "role": "user",
+                "content": "今天是2025年1月20日",
+            },
         ],
         temperature=0,
         response_format={"type": "json_object"},
