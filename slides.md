@@ -229,3 +229,35 @@ def trim_and_filter_lines(text: str) -> str:
 ```
 
 ---
+
+# 資訊抽取 (Information Extraction)
+
+~~小時候~~ vs 以前 vs 現在
+
+上古時代就不說了
+
+---
+
+# 以前（2023）
+
+- 利用 [function calling](https://platform.openai.com/docs/guides/function-calling)
+- 把你想抽取的資訊當作 function arguments，叫 LLM 告訴你該怎麼 call
+
+---
+
+# The lifecycle of a function call
+
+![bg right fit](https://cdn.openai.com/API/docs/images/function-calling-diagram.png)
+
+1. 在送出 prompt 的同時跟 API 說你怎麼定義可以呼叫的函數
+2. API 決定回應你(不呼叫)或是呼叫**一**或**多個**函數
+3. API 給你要呼叫的函數名稱和參數
+4. 你的程式用給定的參數呼叫指定的函數
+5. 呼叫
+
+---
+
+# 
+---
+
+# 現在
