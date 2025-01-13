@@ -1,5 +1,9 @@
 version = 1
 requires-python = ">=3.12"
+resolution-markers = [
+    "python_full_version < '3.13'",
+    "python_full_version >= '3.13'",
+]
 
 [[package]]
 name = "aiohappyeyeballs"
@@ -625,7 +629,7 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.10.5" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "rich", specifier = ">=13.9.4" },
-    { name = "simplemind", specifier = ">=0.2.4" },
+    { name = "simplemind", git = "https://github.com/kennethreitz/simplemind.git" },
 ]
 
 [package.metadata.requires-dev]
@@ -2102,17 +2106,13 @@ wheels = [
 
 [[package]]
 name = "simplemind"
-version = "0.2.4"
-source = { registry = "https://pypi.org/simple" }
+version = "0.3.0"
+source = { git = "https://github.com/kennethreitz/simplemind.git#391bfaaeabf1204732f3e0dfde30fc7d16dd0042" }
 dependencies = [
     { name = "instructor" },
     { name = "logfire" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/a1/8b/6e2da3c6c3bd8ec5eafdcddf6004a64273f1142f7d977f7c50a5ddfb5595/simplemind-0.2.4.tar.gz", hash = "sha256:3cc66e9ca3b870e28a4ac04fdcfa1eecb0a2fceb12468df4d30b8aee290b06cd", size = 994560 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4c/81/6176d2852b811cc92c78ca65fd3033b17d3dc07e8e443df720ba0f8275e2/simplemind-0.2.4-py3-none-any.whl", hash = "sha256:1117c81b33782120242f9c9e8e931a8cd98a43ea3b4914a28c02dc0cad88477d", size = 25788 },
 ]
 
 [[package]]

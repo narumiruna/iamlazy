@@ -242,6 +242,8 @@ def trim_and_filter_lines(text: str) -> str:
 
 - 利用 [function calling](https://platform.openai.com/docs/guides/function-calling)
 - 把你想抽取的資訊當作 function arguments，叫 LLM 告訴你該怎麼 call
+  - [LangChain OpenAI Extraction](https://github.com/langchain-ai/langchain/blob/767523f36495ca45821b383a439e1dd38e4153d6/libs/langchain/langchain/chains/openai_functions/extraction.py)
+  - [Step-by-Step Tutorial for DTO Extraction from Text Using LLMs and LangChain](https://medium.com/@kdcodechronicles/dto-extraction-from-text-with-llms-and-langchain-03ceeb323881)
 
 ---
 
@@ -253,11 +255,14 @@ def trim_and_filter_lines(text: str) -> str:
 2. API 決定回應你(不呼叫)或是呼叫**一**或**多個**函數
 3. API 給你要呼叫的函數名稱和參數
 4. 你的程式用給定的參數呼叫指定的函數
-5. 呼叫
+5. 送出 prompt 和函數的結果
 
 ---
 
-# 
+# Function Calling 的範例
+
+TBD
+
 ---
 
 # 現在

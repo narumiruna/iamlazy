@@ -16,7 +16,7 @@ dependencies = [
     "pydantic>=2.10.5",
     "python-dotenv>=1.0.1",
     "rich>=13.9.4",
-    "simplemind>=0.2.4",
+    "simplemind",
 ]
 
 [project.scripts]
@@ -57,3 +57,6 @@ filterwarnings = ["ignore::DeprecationWarning"]
 
 [tool.mypy]
 ignore_missing_imports = true
+
+[tool.uv.sources]
+simplemind = { git = "https://github.com/kennethreitz/simplemind.git" }
