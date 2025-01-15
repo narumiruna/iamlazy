@@ -247,6 +247,7 @@ def trim_and_filter_lines(text: str) -> str:
 
 ---
 
+<!--
 # The lifecycle of a function call
 
 ![bg right fit](https://cdn.openai.com/API/docs/images/function-calling-diagram.png)
@@ -257,11 +258,14 @@ def trim_and_filter_lines(text: str) -> str:
 4. 你的程式用給定的參數呼叫指定的函數
 5. 送出 prompt 和函數的結果
 
----
+--- -->
 
-# Function Calling 的範例
+# Function Calling
 
-TBD
+- [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
+- [Simplemind Tools](https://github.com/kennethreitz/simplemind/tree/main?tab=readme-ov-file#tools-function-calling) - main branch
+- [LangChain Tool calling](https://python.langchain.com/docs/concepts/tool_calling/)
+  ![bg right fit](https://cdn.openai.com/API/docs/images/function-calling-diagram-steps.png)
 
 ---
 
