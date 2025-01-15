@@ -476,6 +476,72 @@ math_reasoning = completion.choices[0].message.parsed
 
 ---
 
+# 以 Binance Spot API Changelog 為例
+
+定義 Structures
+
+```python
+class Date(BaseModel):
+    year: int
+    month: int
+    day: int
+
+
+class Change(BaseModel):
+    date: Date
+    content: str = Field(..., description="The content of the change")
+
+
+class Changelog(BaseModel):
+    changes: list[Change]
+```
+
+---
+
+# 讀取網頁和抽取資訊
+
+```python
+from openai import OpenAI
+from iamlazy.loaders import PipelineLoader
+
+url = "https://developers.binance.com/docs/binance-spot-api-docs"
+text = PipelineLoader().load(url)
+
+client = OpenAI()
+    response = client.beta.chat.completions.parse(
+        messages=[{"role": "user", "content": text[:5000]}],　# 只想要近期的
+        model="gpt-4o-mini",
+        temperature=0,
+        response_format=Changelog,
+    )
+```
+
+---
+
+# 結果
+
+```
+Changelog(
+    changes=[
+        Change(
+            date=Date(year=2025, month=1, day=9),
+            content='FIX Market Data will be avai...'
+        ),
+        Change(
+            date=Date(year=2024, month=12, day=17),
+            content='General Changes: The system no...'
+        ),
+        Change(
+            date=Date(year=2024, month=12, day=9),
+            content='**Notice:** The changes below...'
+        ),
+        ...
+    ]
+)
+```
+
+---
+
 ### 更多 Structured Outputs
 
 - [OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Structured_Outputs_Intro.ipynb)
