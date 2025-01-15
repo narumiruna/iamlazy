@@ -269,6 +269,58 @@ def trim_and_filter_lines(text: str) -> str:
 
 ---
 
+# LangChain 以前怎麼做 - 隨便打的範例
+
+```python
+class Person(BaseModel):
+    name: str = Field(..., description="The name of the person.")
+    age: int = Field(..., description="The age of the person.")
+
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+chain = create_extraction_chain_pydantic(Person, llm)
+chain.invoke({"input": text})
+```
+
+---
+
+# LangChain 以前怎麼做 - Schema
+
+[create_extraction_chain_pydantic](https://github.com/langchain-ai/langchain/blob/767523f36495ca45821b383a439e1dd38e4153d6/libs/langchain/langchain/chains/openai_functions/extraction.py)
+
+```python
+def _get_extraction_function(entity_schema: dict) -> dict:
+    return {
+        "name": "information_extraction",
+        "description": "Extracts the relevant information from the passage.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "info": {"type": "array", "items": _convert_schema(entity_schema)}
+            },
+            "required": ["info"],
+        },
+    }
+```
+
+---
+
+# LangChain 以前怎麼做 - Prompt
+
+```
+_EXTRACTION_TEMPLATE = """Extract and save the relevant entities mentioned \
+in the following passage together with their properties.
+
+Only extract the properties mentioned in the 'information_extraction' function.
+
+If a property is not present and is not required in the function parameters, do not include it in the output.
+
+Passage:
+{input}
+"""  # noqa: E501
+```
+
+---
+
 # 現在
 
 - [JSON Mode](https://platform.openai.com/docs/guides/structured-outputs/json-mode?lang=python#json-mode)
