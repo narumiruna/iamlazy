@@ -600,6 +600,7 @@ class Change(BaseModel):
 ### 各種方法
 
 - 先寫一個簡單的，然後丟給 [ChatGPT](https://chatgpt.com/) 幫你修改
+- GitHub Copilot
 - [Prompt generation](https://platform.openai.com/docs/guides/prompt-generation)
   - Meta prompt: prompt 的 prompt
 - [Generate prompts, function definitions, and structured output schemas in the Playground](https://help.openai.com/en/articles/9824968-generate-prompts-function-definitions-and-structured-output-schemas-in-the-playground)
