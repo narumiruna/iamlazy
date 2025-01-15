@@ -542,6 +542,34 @@ Changelog(
 
 ---
 
+# 你也可以給一點變化
+
+```python
+class Category(str, Enum):
+    BREAKING_CHANGES = "breaking changes"
+    NEW_FEATURES = "new features"
+    DEPRECATIONS = "deprecations"
+    BUG_FIXES = "bug fixes"
+    PERFORMANCE_IMPROVEMENTS = "performance improvements"
+    SECURITY_UPDATES = "security updates"
+
+
+class Change(BaseModel):
+    date: Date
+    content: str = Field(..., description="The content of the change")
+    category: Category
+```
+
+---
+
+# 於是...
+
+- 你現在可以從 changelog 網頁中抽取出最近的幾則變更項目
+- 有日期就可以紀錄下來(redis)，如果是新的就打到 slack channel
+- 你可以把這個程式放到 cron job 中，定期執行
+
+---
+
 ### 更多 Structured Outputs
 
 - [OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Structured_Outputs_Intro.ipynb)
@@ -557,7 +585,7 @@ Changelog(
 
 ### 各種方法
 
-- 先寫一個簡單的，然後丟給語言模型幫你修改
+- 先寫一個簡單的，然後丟給 [ChatGPT](https://chatgpt.com/) 幫你修改
 - [Prompt generation](https://platform.openai.com/docs/guides/prompt-generation)
   - Meta prompt: prompt 的 prompt
 - [Generate prompts, function definitions, and structured output schemas in the Playground](https://help.openai.com/en/articles/9824968-generate-prompts-function-definitions-and-structured-output-schemas-in-the-playground)

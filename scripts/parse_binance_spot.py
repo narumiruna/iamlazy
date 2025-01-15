@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from enum import Enum
+
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -6,6 +10,15 @@ from pydantic import Field
 from rich import print
 
 from iamlazy.loaders import PipelineLoader
+
+
+class Category(str, Enum):
+    BREAKING_CHANGES = "breaking changes"
+    NEW_FEATURES = "new features"
+    DEPRECATIONS = "deprecations"
+    BUG_FIXES = "bug fixes"
+    PERFORMANCE_IMPROVEMENTS = "performance improvements"
+    SECURITY_UPDATES = "security updates"
 
 
 class Date(BaseModel):
@@ -17,6 +30,7 @@ class Date(BaseModel):
 class Change(BaseModel):
     date: Date
     content: str = Field(..., description="The content of the change")
+    category: Category
 
 
 class Changelog(BaseModel):
