@@ -402,12 +402,8 @@ print(response.choices[0].message.content)
 
 - 使用 Pydantic
 - 不用在 prompt 中寫 schema
+- [Supported Models](https://platform.openai.com/docs/guides/structured-outputs/supported-models)
 
----
-
-### [Supported Models](https://platform.openai.com/docs/guides/structured-outputs/supported-models)
-
-- gpt-4o
   - gpt-4o-mini-2024-07-18 and later
   - gpt-4o-2024-08-06 and later
 
