@@ -28,13 +28,17 @@ class Date(BaseModel):
 
 
 class Change(BaseModel):
-    date: Date
-    content: str = Field(..., description="The content of the change")
+    change: str
     category: Category
 
 
+class Entry(BaseModel):
+    date: Date
+    changes: list[Change] = Field(..., description="The changes made")
+
+
 class Changelog(BaseModel):
-    changes: list[Change]
+    entries: list[Entry]
 
 
 def main() -> None:

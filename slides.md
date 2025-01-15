@@ -486,14 +486,33 @@ class Date(BaseModel):
     month: int
     day: int
 
-
 class Change(BaseModel):
-    date: Date
-    content: str = Field(..., description="The content of the change")
+    change: str
 
+class Entry(BaseModel):
+    date: Date
+    changes: list[Change] = Field(..., description="The changes made")
 
 class Changelog(BaseModel):
-    changes: list[Change]
+    entries: list[Entry]
+```
+
+---
+
+# 也可以做分類
+
+```python
+class Category(str, Enum):
+    BREAKING_CHANGES = "breaking changes"
+    NEW_FEATURES = "new features"
+    DEPRECATIONS = "deprecations"
+    BUG_FIXES = "bug fixes"
+    PERFORMANCE_IMPROVEMENTS = "performance improvements"
+    SECURITY_UPDATES = "security updates"
+
+class Change(BaseModel):
+    change: str
+    category: Category
 ```
 
 ---
@@ -522,18 +541,20 @@ client = OpenAI()
 
 ```
 Changelog(
-    changes=[
-        Change(
+    entries=[
+        Entry(
             date=Date(year=2025, month=1, day=9),
-            content='FIX Market Data will be avai...'
+            changes=[Change(change='FIX Market Da...', category=<Category.NEW_FEATURES: 'new features'>)]
         ),
-        Change(
+        Entry(
             date=Date(year=2024, month=12, day=17),
-            content='General Changes: The system no...'
-        ),
-        Change(
-            date=Date(year=2024, month=12, day=9),
-            content='**Notice:** The changes below...'
+            changes=[
+                Change(
+                    change='The system now supports...',
+                    category=<Category.NEW_FEATURES: 'new features'>
+                ),
+                ...
+            ]
         ),
         ...
     ]
@@ -545,13 +566,6 @@ Changelog(
 # 你也可以給一點變化
 
 ```python
-class Category(str, Enum):
-    BREAKING_CHANGES = "breaking changes"
-    NEW_FEATURES = "new features"
-    DEPRECATIONS = "deprecations"
-    BUG_FIXES = "bug fixes"
-    PERFORMANCE_IMPROVEMENTS = "performance improvements"
-    SECURITY_UPDATES = "security updates"
 
 
 class Change(BaseModel):
