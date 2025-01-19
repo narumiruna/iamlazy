@@ -47,7 +47,6 @@ def main() -> None:
     url = "https://developers.binance.com/docs/binance-spot-api-docs"
     resp = httpx.get(url)
     resp.raise_for_status()
-
     content = md(resp.text, strip=["a", "img"])
 
     client = OpenAI()

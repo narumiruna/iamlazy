@@ -185,13 +185,13 @@ with Path(filename).open() as fp:
 
 # 為什麼要轉成 Markdown？
 
-**Pros**
+**優點**
 
 - 省 token，處理效率高
 - 讓 LLM 專注在文字上，不用管 HTML 的 tag
 - 對人來說比較好閱讀
 
-**Cons**
+**缺點**
 
 - 結構比較沒有 HTML 完整
 
@@ -533,18 +533,21 @@ class Change(BaseModel):
 
 ```python
 from openai import OpenAI
-from iamlazy.loaders import PipelineLoader
+import httpx
+from markdownify import markdownify as md
 
 url = "https://developers.binance.com/docs/binance-spot-api-docs"
-text = PipelineLoader().load(url)
+resp = httpx.get(url)
+resp.raise_for_status()
+content = md(resp.text, strip=["a", "img"])
 
 client = OpenAI()
-    response = client.beta.chat.completions.parse(
-        messages=[{"role": "user", "content": text[:5000]}],　# 只想要近期的
-        model="gpt-4o-mini",
-        temperature=0,
-        response_format=Changelog,
-    )
+response = client.beta.chat.completions.parse(
+    messages=[{"role": "user", "content": content[:5000]}],　# 只想要近期的
+    model="gpt-4o-mini",
+    temperature=0,
+    response_format=Changelog,
+)
 ```
 
 ---
@@ -587,11 +590,33 @@ Changelog(
 
 ---
 
-# 要注意
+# OpenAI Playground - 產生 Prompt
+
+![](images/playground1.png)
+
+---
+
+# OpenAI Playground - 產生 Prompt
+
+![](images/playground2.png)
+
+---
+
+# OpenAI Playground - 修改 Prompt
+
+![](images/playground3.png)
+
+![](images/playground4.png)
+
+---
+
+# 小心得
 
 - 指令要明確
-- 記得叫語言模型不要捏造事實
-- 用同一個 prompt 抽不同目標且格式差異大時，給範例可能會有反效果 (overfitting?)
+- 叫語言模型不要捏造事實(既使是這樣，還是可能有幻覺)
+- 用同一個 prompt 抽不同目標且格式差異大時，給範例可能會有反效果
+
+[OpenAI Guides - Prompt engineering](https://platform.openai.com/docs/guides/prompt-engineering)
 
 ---
 
@@ -611,13 +636,19 @@ Changelog(
 
 ---
 
+# 跑一陣子之後的感覺
+
+- 不要太相信結果，語言模型很容易產生幻覺
+- 不同頁面抓起來的效果不一樣
+- 至少抓日期還可接受，changelog 有更新就可以從 slack channel 知道
+- 可能是我太客家，只用 gpt-4o-mini
+- 這種方法可以在一開始的時候快速開發，之後退居二線作為備案
+
+---
+
 # Demo
 
 隨便找一些網站來試試看
-
-- 新聞
-- 購物
-- 食譜
 
 ---
 
