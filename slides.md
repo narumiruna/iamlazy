@@ -3,6 +3,12 @@ marp: true
 paginate: true
 ---
 
+<style>
+section {
+ font-family: MesloLGS Nerd Font;
+}
+</style>
+
 ![bg fit](images/iamlazy.png)
 
 ---
