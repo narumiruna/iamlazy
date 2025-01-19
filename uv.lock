@@ -621,6 +621,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "rich" },
     { name = "simplemind" },
+    { name = "timeout-decorator" },
     { name = "youtube-transcript-api" },
 ]
 
@@ -647,6 +648,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "rich", specifier = ">=13.9.4" },
     { name = "simplemind", git = "https://github.com/kennethreitz/simplemind.git" },
+    { name = "timeout-decorator", specifier = ">=0.5.0" },
     { name = "youtube-transcript-api", specifier = ">=0.6.3" },
 ]
 
@@ -2217,6 +2219,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/8a/11/965c6fd8e5cc254f1
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6a/9e/2064975477fdc887e47ad42157e214526dcad8f317a948dee17e1659a62f/terminado-0.18.1-py3-none-any.whl", hash = "sha256:a4468e1b37bb318f8a86514f65814e1afc977cf29b3992a4500d9dd305dcceb0", size = 14154 },
 ]
+
+[[package]]
+name = "timeout-decorator"
+version = "0.5.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/80/f8/0802dd14c58b5d3d72bb9caa4315535f58787a1dc50b81bbbcaaa15451be/timeout-decorator-0.5.0.tar.gz", hash = "sha256:6a2f2f58db1c5b24a2cc79de6345760377ad8bdc13813f5265f6c3e63d16b3d7", size = 4754 }
 
 [[package]]
 name = "tinycss2"
