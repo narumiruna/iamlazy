@@ -102,12 +102,9 @@ paginate: true
 - 過濾掉不是最近的**變更項目**
 - 把結果打到 Slack channel
 
----
-
-# 探索的過程（失敗）
+順便說一下
 
 - 給今天的日期直接叫語言模型找最近的幾則，效果很差
-- Changelog 頁面很長，記得砍掉不需要的部分
 
 ---
 
@@ -216,7 +213,7 @@ print(trim_and_filter_lines(markdown))
 
 ---
 
-# 清掉空白和換行
+# 清掉多餘的空白和換行
 
 ```python
 def trim_and_filter_lines(text: str) -> str:
@@ -272,13 +269,14 @@ def trim_and_filter_lines(text: str) -> str:
 # Function Calling
 
 - [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
-- [Simplemind Tools](https://github.com/kennethreitz/simplemind/tree/main?tab=readme-ov-file#tools-function-calling) - main branch
 - [LangChain Tool calling](https://python.langchain.com/docs/concepts/tool_calling/)
   ![bg right fit](https://cdn.openai.com/API/docs/images/function-calling-diagram-steps.png)
 
 ---
 
-# LangChain 以前怎麼做 - 隨便打的範例
+# LangChain 以前怎麼做
+
+隨便打的範例
 
 ```python
 class Person(BaseModel):
@@ -292,7 +290,7 @@ chain.invoke({"input": text})
 
 ---
 
-# LangChain 以前怎麼做 - Schema
+# LangChain 以前怎麼做
 
 [create_extraction_chain_pydantic](https://github.com/langchain-ai/langchain/blob/767523f36495ca45821b383a439e1dd38e4153d6/libs/langchain/langchain/chains/openai_functions/extraction.py)
 
@@ -313,7 +311,7 @@ def _get_extraction_function(entity_schema: dict) -> dict:
 
 ---
 
-# LangChain 以前怎麼做 - Prompt
+# LangChain 以前怎麼做
 
 ```
 _EXTRACTION_TEMPLATE = """Extract and save the relevant entities mentioned \
@@ -646,6 +644,16 @@ Changelog(
 
 ---
 
+# 看程式和結果
+
+- [Github Repo](https://github.com/narumiruna/exchange-changelog)
+- [SingleFile](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/loaders/html.py#L19)
+  <!-- - [System prompt](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/tools/changelog.py#L11) -->
+  <!-- - [Prompt generation](https://github.com/narumiruna/exchange-changelog/blob/ec104c294d5363c8bb2255baa36db771a906869c/generate_prompt.py#L8) -->
+- [Gist](https://gist.github.com/narumiruna/707786b350fc17197a35ee9ae3d0456d)
+
+---
+
 # 有沒有更懶的工具？
 
 - [simplemid](https://github.com/kennethreitz/simplemind)
@@ -654,11 +662,56 @@ Changelog(
 
 ---
 
+# Simplemind
+
+```python
+import simplemind as sm
+from pydantic import BaseModel
+
+class InstructionStep(BaseModel):
+    step_number: int
+    instruction: str
+
+class RecipeIngredient(BaseModel):
+    name: str
+    quantity: float
+    unit: str
+
+class Recipe(BaseModel):
+    name: str
+    ingredients: list[RecipeIngredient]
+    instructions: list[InstructionStep]
+
+recipe = sm.generate_data("Write a recipe for chocolate chip cookies", response_model=Recipe)
+```
+
+---
+
+# mirascope
+
+```python
+from mirascope.core import openai
+from pydantic import BaseModel
+
+class Book(BaseModel):
+    title: str
+    author: str
+
+@openai.call("gpt-4o-mini", response_model=Book)
+def extract_book(text: str) -> str:
+    return f"Extract {text}"
+
+book = extract_book("The Name of the Wind by Patrick Rothfuss")
+# title='The Name of the Wind' author='Patrick Rothfuss'
+```
+
+---
+
 # Demo
 
 隨便找一些網站來試試看
 
----
+<!--
 
 # 更多 Structured Outputs
 
@@ -666,17 +719,7 @@ Changelog(
 
 ---
 
-### [簡單的範例](https://github.com/narumiruna/exchange-changelog/blob/main/examples/binance_spot_example.ipynb)
-
----
-
-# 看程式和結果
-
-- [Github](https://github.com/narumiruna/exchange-changelog)
-- [SingleFile](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/loaders/html.py#L19)
-- [System prompt](https://github.com/narumiruna/exchange-changelog/blob/6ff1568a681e4975cfca7ac65c3eb65db775e9c8/exchange_changelog/tools/changelog.py#L11)
-- [Prompt generation](https://github.com/narumiruna/exchange-changelog/blob/ec104c294d5363c8bb2255baa36db771a906869c/generate_prompt.py#L8)
-- [Gist](https://gist.github.com/narumiruna/707786b350fc17197a35ee9ae3d0456d)
+ -->
 
 ---
 
