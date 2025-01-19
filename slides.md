@@ -277,6 +277,7 @@ def trim_and_filter_lines(text: str) -> str:
 - [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
 - [LangChain Tool calling](https://python.langchain.com/docs/concepts/tool_calling/)
   ![bg right fit](https://cdn.openai.com/API/docs/images/function-calling-diagram-steps.png)
+- [Mirascope Tools](https://mirascope.com/learn/tools/)
 
 ---
 
