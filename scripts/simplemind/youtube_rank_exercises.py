@@ -2,40 +2,33 @@ import simplemind as sm
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from pydantic import BaseModel
+from pydantic import Field
 from rich import print
 
 from iamlazy.loaders import PipelineLoader
 
 
-class Ingredient(BaseModel):
+class Exercise(BaseModel):
     name: str
-    quantity: str
-    unit: str
-    preparation: str
+    tier: str
+    reason: str
 
 
-class Step(BaseModel):
-    description: str
-    ingredients: list[Ingredient]
-
-
-class Recipe(BaseModel):
-    title: str
-    ingredients: list[Ingredient]
-    steps: list[Step]
+class Exercises(BaseModel):
+    exercises: list[Exercise]
+    summary: str
 
 
 def main() -> None:
     load_dotenv(find_dotenv())
 
-    # url = "https://youtu.be/esSqXd7Jxb0"
-    url = "https://youtu.be/9biIOtEYeHc"
+    url = "https://youtu.be/fGm-ef-4PVk"
     content = PipelineLoader().load(url)
 
     print(content)
 
     prompt = f"""
-    從字幕中抽取食譜資訊，不要捏造任何資訊。抽取後翻譯成台灣繁體中文。
+    從字幕中抽取資訊，不要捏造任何資訊。抽取後翻譯成台灣繁體中文。
 
     字幕：
     ```
@@ -46,7 +39,7 @@ def main() -> None:
         prompt,
         llm_model="gpt-4o-mini",
         llm_provider="openai",
-        response_model=Recipe,
+        response_model=Exercises,
     )
     print(data)
 
