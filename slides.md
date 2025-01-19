@@ -646,6 +646,14 @@ Changelog(
 
 ---
 
+# 有沒有更懶的工具？
+
+- [simplemid](https://github.com/kennethreitz/simplemind)
+- [mirascope](https://github.com/Mirascope/mirascope/)
+- [instructor](https://github.com/instructor-ai/instructor)
+
+---
+
 # Demo
 
 隨便找一些網站來試試看
@@ -655,9 +663,6 @@ Changelog(
 # 更多 Structured Outputs
 
 - [OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Structured_Outputs_Intro.ipynb)
-- [simplemid](https://github.com/kennethreitz/simplemind/tree/main/examples)
-- [mirascope](https://github.com/Mirascope/mirascope/)
-- [instructor](https://github.com/instructor-ai/instructor)
 
 ---
 
