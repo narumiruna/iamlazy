@@ -52,9 +52,8 @@ def main() -> None:
 
     content = md(resp.text, strip=["img"])
 
-    products = extract_product(content)
-    for product in products:
-        print(product)
+    product = extract_product(content)
+    print(product)
 
 
 if __name__ == "__main__":
