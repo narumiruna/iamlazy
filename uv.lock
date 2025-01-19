@@ -601,6 +601,7 @@ dependencies = [
     { name = "jupyter" },
     { name = "loguru" },
     { name = "markdownify" },
+    { name = "mirascope" },
     { name = "openai" },
     { name = "playwright" },
     { name = "pydantic" },
@@ -609,7 +610,7 @@ dependencies = [
     { name = "simplemind" },
 ]
 
-[package.dev-dependencies]
+[package.dependency-groups]
 dev = [
     { name = "mypy" },
     { name = "pytest" },
@@ -624,6 +625,7 @@ requires-dist = [
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "loguru", specifier = ">=0.7.3" },
     { name = "markdownify", specifier = ">=0.14.1" },
+    { name = "mirascope", specifier = ">=1.15.1" },
     { name = "openai", specifier = ">=1.59.6" },
     { name = "playwright", specifier = ">=1.49.1" },
     { name = "pydantic", specifier = ">=2.10.5" },
@@ -632,7 +634,7 @@ requires-dist = [
     { name = "simplemind", git = "https://github.com/kennethreitz/simplemind.git" },
 ]
 
-[package.metadata.requires-dev]
+[package.metadata.dependency-groups]
 dev = [
     { name = "mypy", specifier = ">=1.13.0" },
     { name = "pytest", specifier = ">=8.3.3" },
@@ -1192,6 +1194,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979 },
+]
+
+[[package]]
+name = "mirascope"
+version = "1.15.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "docstring-parser" },
+    { name = "jiter" },
+    { name = "pydantic" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1c/c7/ad49b2f3a40e236688ac3bfdadc7acf351826d2ac2fa92fccadabb7b2367/mirascope-1.15.1.tar.gz", hash = "sha256:7ad113615f416e236b74fd3d5888119818caff20111ca835cad44590880665b2", size = 66137203 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/07/36/a1897ea7afbf3b45555dc36984ce20b97761c94b9aa0247986b904cac9b8/mirascope-1.15.1-py3-none-any.whl", hash = "sha256:d02dd329628d95a8aeb68f15bd58ec002524c2d6b9ae300703727c52a99b3d21", size = 276146 },
 ]
 
 [[package]]
