@@ -4,6 +4,7 @@ from .httpx import HttpxLoader
 from .loader import Loader
 from .loader import LoaderError
 from .playwright import PlaywrightLoader
+from .youtube import YoutubeLoader
 
 # from .cloudscraper import CloudscraperLoader
 # from .singlefile import SinglefileLoader
@@ -13,6 +14,7 @@ class PipelineLoader(Loader):
     def __init__(self) -> None:
         self.loaders: list[Loader] = [
             # CloudscraperLoader(),
+            YoutubeLoader(),
             HttpxLoader(),
             PlaywrightLoader(),
             # SinglefileLoader(),
