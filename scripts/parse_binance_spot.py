@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from enum import Enum
 
+import httpx
 from dotenv import find_dotenv
 from dotenv import load_dotenv
+from markdownify import markdownify as md
 from openai import OpenAI
 from pydantic import BaseModel
 from pydantic import Field
 from rich import print
-
-from iamlazy.loaders import PipelineLoader
 
 
 class Category(str, Enum):
@@ -45,12 +45,14 @@ def main() -> None:
     load_dotenv(find_dotenv())
 
     url = "https://developers.binance.com/docs/binance-spot-api-docs"
-    text = PipelineLoader().load(url)
-    print("Length of text:", len(text))
+    resp = httpx.get(url)
+    resp.raise_for_status()
+
+    content = md(resp.text, strip=["a", "img"])
 
     client = OpenAI()
     response = client.beta.chat.completions.parse(
-        messages=[{"role": "user", "content": text[:5000]}],
+        messages=[{"role": "user", "content": content[:5000]}],
         model="gpt-4o-mini",
         temperature=0,
         response_format=Changelog,

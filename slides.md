@@ -7,12 +7,20 @@ paginate: true
 
 ---
 
-# 故事大概是這樣
+<!-- # 故事大概是這樣
 
-- 遇到了什麼事？
+- 遇到了什麼困難？
 - 我有哪些工具？該怎麼辦？
 - 好像解掉了但又沒有解掉
 - 算了我懶得管它了
+ -->
+
+# 故事大概是這樣
+
+- 遇到的問題
+- 抓網頁和前處理
+- 資訊抽取 (Structured Outputs)
+- Demo 各種 structured outputs 的用法
 
 ---
 
@@ -81,8 +89,8 @@ paginate: true
 
 丟給語言模型，叫他抽給你，夭壽方便，但是
 
-- 需要轉成結構化的輸出(structured output)，至少日期格式要一致
-- 語言模型可能產生幻覺(hallucination)唬爛你或是不獸控制，要好好寫 prompt
+- 需要轉成結構化的輸出(structured outputs)，至少日期格式要一致
+- 語言模型可能產生幻覺(hallucination)唬爛你或是不受控制，要好好寫 prompt
 
 ---
 
@@ -136,8 +144,9 @@ print(resp.text)
 - [Playwright](https://playwright.dev/) - 微軟在 2020 年發布的工具，速度快
 - [SingleFile](https://chromewebstore.google.com/detail/singlefile/mpiodijhokgodhhofbcjdecpffjipkle) - 一個 Chrome 的套件，可以一鍵抓下整個網頁儲存成單一檔案，[SingleFile CLI](https://github.com/gildas-lormeau/single-file-cli) 版本
   - docker: `docker run capsulecode/singlefile "https://docs.cdp.coinbase.com/exchange/docs/changelog/" >> coinbase.html`
+  - AGPL-3.0 License
 
-目前的偏好是 Playwright >= SingleFile > Selenium
+目前的偏好是 Playwright >= SingleFile CLI > Selenium
 
 ---
 
@@ -151,21 +160,21 @@ print(resp.text)
 
 # 簡單的範例 (SingleFile CLI)
 
-[Prerequisite: install single-file cli with npm](https://github.com/gildas-lormeau/single-file-cli?tab=readme-ov-file#manual-installation)
+[Install single-file cli with npm](https://github.com/gildas-lormeau/single-file-cli?tab=readme-ov-file#manual-installation)
 
 ```python
 import subprocess
 from pathlib import Path
 
-
+url = "https://docs.cdp.coinbase.com/exchange/docs/changelog", # 要抓的網頁
+filename = "coinbase.html" # 輸出檔案名稱
 subprocess.run(
     [
         "single-file",
-        "--browser-load-max-time=10_000", # 等待網頁載入的時間(等JavaScript)
         "--block-images=true", # 不要抓圖片
         "--filename-conflict-action=overwrite", # 若檔案已存在，覆蓋
-        "https://docs.cdp.coinbase.com/exchange/docs/changelog",
-        "coinbase.html",
+        url,
+        filename,
     ]
 )
 with Path(filename).open() as fp:
@@ -325,10 +334,8 @@ Passage:
 
 - [JSON Mode](https://platform.openai.com/docs/guides/structured-outputs/json-mode?lang=python#json-mode)
   - [Improved instruction following and JSON mode](https://openai.com/index/new-models-and-developer-products-announced-at-devday/)
-- [Structured Output](https://platform.openai.com/docs/guides/structured-outputs) (推薦)
+- [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs) (推薦)
   - [OpenAI CookBook - Introduction to Structured Outputs](https://cookbook.openai.com/examples/structured_outputs_intro)
-  - 不用驗證拿到的輸出是否正確，也不用再重新產一次輸出
-  - 寫 prompt 更容易了，不用再特別強調要輸出什麼樣的格式
 
 ---
 
@@ -398,13 +405,18 @@ print(response.choices[0].message.content)
 
 ---
 
-# [Structuted Output](https://platform.openai.com/docs/guides/structured-outputs)
+# [Structuted Outputs](https://platform.openai.com/docs/guides/structured-outputs)
 
-- 使用 Pydantic
-- 不用在 prompt 中寫 schema
+- 好處 (vs JSON Mode)
+  - 不用驗證拿到的輸出是否正確，也不用再重新產一次輸出
+  - [Refusals 比較容易處理](https://platform.openai.com/docs/guides/structured-outputs#refusals)
+  - 寫 prompt 更容易了，不用再特別強調要輸出什麼樣的格式與內容
+    - 用 pydantic 的 BaseModel 寫起來比較舒服
 - [Supported Models](https://platform.openai.com/docs/guides/structured-outputs/supported-models)
   - gpt-4o-mini-2024-07-18 and later
   - gpt-4o-2024-08-06 and later
+
+P.S. Gemini 是用 typing.TypedDict - [透過 Gemini API 產生結構化輸出內容](https://ai.google.dev/gemini-api/docs/structured-output?lang=python)
 
 ---
 
@@ -563,16 +575,23 @@ Changelog(
 
 ---
 
-# 你也可以給一點變化
+# Prompt Generation
 
-```python
+各種方法
 
+- 叫 [ChatGPT](https://chatgpt.com/) 幫你產生
+- GitHub Copilot
+- [OpenAI Playground](https://platform.openai.com/playground)
+- [OpenAI Guides - Prompt generation](https://platform.openai.com/docs/guides/prompt-generation)
+- [Anthropic dashboard](https://console.anthropic.com/dashboard)
 
-class Change(BaseModel):
-    date: Date
-    content: str = Field(..., description="The content of the change")
-    category: Category
-```
+---
+
+# 要注意
+
+- 指令要明確
+- 記得叫語言模型不要捏造事實
+- 用同一個 prompt 抽不同目標且格式差異大時，給範例可能會有反效果 (overfitting?)
 
 ---
 
@@ -584,34 +603,30 @@ class Change(BaseModel):
 
 ---
 
-### 更多 Structured Outputs
+# Github Actions
+
+- [self-hosted runners](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners)
+
+![](images/github_actions.png)
+
+---
+
+# Demo
+
+隨便找一些網站來試試看
+
+- 新聞
+- 購物
+- 食譜
+
+---
+
+# 更多 Structured Outputs
 
 - [OpenAI Cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Structured_Outputs_Intro.ipynb)
 - [simplemid](https://github.com/kennethreitz/simplemind/tree/main/examples)
-
----
-
-## Prompt Generation
-
-我就懶
-
----
-
-### 各種方法
-
-- 先寫一個簡單的，然後丟給 [ChatGPT](https://chatgpt.com/) 幫你修改
-- GitHub Copilot
-- [Prompt generation](https://platform.openai.com/docs/guides/prompt-generation)
-  - Meta prompt: prompt 的 prompt
-- [Generate prompts, function definitions, and structured output schemas in the Playground](https://help.openai.com/en/articles/9824968-generate-prompts-function-definitions-and-structured-output-schemas-in-the-playground)
-- [Anthropic dashboard](https://console.anthropic.com/dashboard)
-
----
-
-### 修改 Prompt 的心得
-
-- 指令明確
-- 用同一個 prompt 抽不同目標且格式差異大時，在使用 structured output 的情況下不要給 example
+- [mirascope](https://github.com/Mirascope/mirascope/)
+- [instructor](https://github.com/instructor-ai/instructor)
 
 ---
 
