@@ -2,7 +2,6 @@ import simplemind as sm
 from dotenv import find_dotenv
 from dotenv import load_dotenv
 from pydantic import BaseModel
-from pydantic import Field
 from rich import print
 
 from iamlazy.loaders import PipelineLoader
