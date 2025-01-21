@@ -1,6 +1,8 @@
 from typing import Literal
 
 import httpx
+from dotenv import find_dotenv
+from dotenv import load_dotenv
 from markdownify import markdownify as md
 from mirascope.core import openai
 from pydantic import BaseModel
@@ -48,12 +50,14 @@ def extract_restaurants(content: str) -> list[Restaurant]:
 
 
 def main() -> None:
+    load_dotenv(find_dotenv())
     url = "https://tabelog.com/rstLst/tonkatsu/?SrtT=rt&Srt=D&sort_mode=1"
 
     resp = httpx.get(url, follow_redirects=True)
     resp.raise_for_status()
 
     content = md(resp.text, strip=["img"])
+    print(content)
 
     restaurants = extract_restaurants(content)
     for restaurant in restaurants:
